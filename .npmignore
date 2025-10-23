@@ -1,0 +1,65 @@
+# package managers and locks
+node_modules/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.yarnrc.yml
+.npmrc
+package-lock.json
+npm-shrinkwrap.json
+yarn.lock
+pnpm-lock.yaml
+
+# logs and debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# tests and coverage
+test/
+tests/
+__tests__/
+coverage/
+.nyc_output/
+.vscode-test/
+
+# build artifacts and caches
+dist/
+build/
+lib-cov/
+.cache/
+.parcel-cache/
+.next/
+out/
+.nuxt/
+.temp/
+.svelte-kit/
+**/.vitepress/dist
+**/.vitepress/cache
+.docusaurus/
+
+# misc caches and temp
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.DS_Store
+Thumbs.db
+*.tgz
+
+# project outputs not for publish
+multishot/
+
+# Vite logs
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# git metadata
+.git/
+.gitignore

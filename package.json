@@ -1,7 +1,7 @@
 {
   "name": "multishot",
-  "version": "0.1.0",
-  "description": "Sequentially run CLI based AI tasks",
+  "version": "0.1.1",
+  "description": "Generate phase plans, create executable task prompts, and run them sequentially through your preferred CLI.",
   "homepage": "https://github.com/alfreema/multishot#readme",
   "bugs": {
     "url": "https://github.com/alfreema/multishot/issues"
@@ -13,7 +13,7 @@
   "license": "MIT",
   "author": "Aaron Freeman",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "src/cli.js",
   "preferGlobal": true,
   "bin": {
     "multishot": "bin/multishot.js"
