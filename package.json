@@ -18,6 +18,11 @@
   "bin": {
     "multishot": "bin/multishot.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "data/"
+  ],
   "scripts": {
     "test": "vitest --run --pool=threads",
     "multishot": "node bin/multishot.js"

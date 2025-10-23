@@ -3,11 +3,28 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { getCliInvocation } = require('./cliCommands');
 
+// Keep relative paths for internal API/tests; resolve to absolute at spawn time.
 const PROMPT_PATHS = {
   'gen-phases': 'data/prompts/generate-phases.md',
   'gen-tasks': 'data/prompts/generate-tasks.md',
   'run-tasks': 'data/prompts/execute-task.md',
 };
+
+// Resolve a repo-relative path (e.g., data/...) to an absolute path
+// based on this package's installed location. Works in local dev and when installed globally.
+function resolveFromPackageRoot(relativePath) {
+  if (!relativePath || path.isAbsolute(relativePath)) {
+    return relativePath;
+  }
+  const pkgRoot = path.resolve(__dirname, '..', '..');
+  return path.join(pkgRoot, relativePath);
+}
+
+// Determine the path to pass to the spawned CLI:
+// Always resolve relative paths to an absolute path within the installed package.
+function getPromptPathForInvocation(effectivePromptPath) {
+  return resolveFromPackageRoot(effectivePromptPath);
+}
 
 const ACTION_DEPENDENCIES = {
   'gen-phases': [
@@ -224,7 +241,8 @@ function executePrompt(params, deps) {
   }
 
   const effectivePromptPath = promptPath || resolvePrompt(action);
-  const invocation = getCliInvocation(cli, effectivePromptPath);
+  const pathForCli = getPromptPathForInvocation(effectivePromptPath);
+  const invocation = getCliInvocation(cli, pathForCli);
   if (invocation.args.length > 0) {
     const args = [...invocation.args];
     let message = args[args.length - 1];

@@ -84,6 +84,7 @@ describe('executePrompt', () => {
     expect(result.code).toBe(0);
     expect(result.promptPath).toBe('data/prompts/generate-phases.md');
     expect(result.invocation.command).toBe('codex');
+    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/generate-phases.md');
     expect(onBeforeSpawn).toHaveBeenCalledWith({
       command: 'codex',
       args: [
@@ -94,7 +95,7 @@ describe('executePrompt', () => {
         '--sandbox',
         'danger-full-access',
         '--skip-git-repo-check',
-        'Execute the prompt in data/prompts/generate-phases.md',
+        `Execute the prompt in ${expectedPromptAbs}`,
       ],
     });
     expect(spawn).toHaveBeenCalledWith(
@@ -107,7 +108,7 @@ describe('executePrompt', () => {
         '--sandbox',
         'danger-full-access',
         '--skip-git-repo-check',
-        'Execute the prompt in data/prompts/generate-phases.md',
+        `Execute the prompt in ${expectedPromptAbs}`,
       ],
       { stdio: 'inherit' },
     );
@@ -134,8 +135,9 @@ describe('executePrompt', () => {
       { spawn, fs: fsMock },
     );
     expect(result.promptPath).toBe('data/prompts/generate-tasks.md');
+    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/generate-tasks.md');
     expect(result.invocation.args[result.invocation.args.length - 1]).toBe(
-      'Execute the prompt in data/prompts/generate-tasks.md for phase Phase1',
+      `Execute the prompt in ${expectedPromptAbs} for phase Phase1`,
     );
     expect(result.phaseId).toBe('Phase1');
   });
@@ -211,6 +213,7 @@ describe('executePrompt', () => {
       },
       { spawn, fs: fsMock },
     );
+    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/execute-task.md');
     expect(spawn).toHaveBeenCalledWith(
       'codex',
       [
@@ -221,7 +224,7 @@ describe('executePrompt', () => {
         '--sandbox',
         'danger-full-access',
         '--skip-git-repo-check',
-        'Execute the prompt in data/prompts/execute-task.md for phase Phase1 task multishot/Phase1/task1.md',
+        `Execute the prompt in ${expectedPromptAbs} for phase Phase1 task multishot/Phase1/task1.md`,
       ],
       { stdio: 'inherit' },
     );
