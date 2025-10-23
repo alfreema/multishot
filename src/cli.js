@@ -13,6 +13,7 @@ const ACTION_MAP = {
   genPhases: 'gen-phases',
   genTasks: 'gen-tasks',
   runTasks: 'run-tasks',
+  runPhase: 'run-phase',
 };
 
 function buildProgram() {
@@ -32,7 +33,8 @@ function buildProgram() {
   program
     .option('--gen-phases', 'Generate docs/specs/phases.md from project spec')
     .option('--gen-tasks', 'Generate per-phase task prompts')
-    .option('--run-tasks', 'Execute task prompts sequentially');
+    .option('--run-tasks', 'Execute task prompts sequentially')
+    .option('--run-phase <phaseId>', 'Execute all tasks for a single phase');
 
   return program;
 }
@@ -86,11 +88,15 @@ function parseArgs(argv = process.argv) {
     throw new Error('Only one action flag is allowed');
   }
 
-  return {
+  const payload = {
     kind: 'command',
     cli: options.cli,
     action: selected[0],
   };
+  if (selected[0] === 'run-phase') {
+    payload.phaseId = options.runPhase;
+  }
+  return payload;
 }
 
 function run(argv = process.argv, io, deps) {
@@ -138,6 +144,11 @@ function run(argv = process.argv, io, deps) {
       orchestration = orchestrator.runGenTasks(context);
     } else if (result.action === 'run-tasks') {
       orchestration = orchestrator.runTasks(context);
+    } else if (result.action === 'run-phase') {
+      if (!result.phaseId) {
+        throw new Error('phaseId is required for --run-phase');
+      }
+      orchestration = orchestrator.runPhase(context, result.phaseId);
     } else {
       throw new Error(`Unsupported action "${result.action}"`);
     }

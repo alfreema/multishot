@@ -84,7 +84,12 @@ describe('executePrompt', () => {
     expect(result.code).toBe(0);
     expect(result.promptPath).toBe('data/prompts/generate-phases.md');
     expect(result.invocation.command).toBe('codex');
-    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/generate-phases.md');
+    const expectedPromptAbs = path.resolve(
+      process.cwd(),
+      'multishot',
+      '.internal',
+      'generate-phases.md',
+    );
     expect(onBeforeSpawn).toHaveBeenCalledWith({
       command: 'codex',
       args: [
@@ -135,7 +140,12 @@ describe('executePrompt', () => {
       { spawn, fs: fsMock },
     );
     expect(result.promptPath).toBe('data/prompts/generate-tasks.md');
-    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/generate-tasks.md');
+    const expectedPromptAbs = path.resolve(
+      process.cwd(),
+      'multishot',
+      '.internal',
+      'generate-tasks.md',
+    );
     expect(result.invocation.args[result.invocation.args.length - 1]).toBe(
       `Execute the prompt in ${expectedPromptAbs} for phase Phase1`,
     );
@@ -213,7 +223,12 @@ describe('executePrompt', () => {
       },
       { spawn, fs: fsMock },
     );
-    const expectedPromptAbs = path.resolve(process.cwd(), 'data/prompts/execute-task.md');
+    const expectedPromptAbs = path.resolve(
+      process.cwd(),
+      'multishot',
+      '.internal',
+      'execute-task.md',
+    );
     expect(spawn).toHaveBeenCalledWith(
       'codex',
       [

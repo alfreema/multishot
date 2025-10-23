@@ -135,10 +135,74 @@ function createOrchestrator(deps = {}) {
     };
   }
 
+  function runPhase(context, targetPhaseId) {
+    if (!context?.cli) {
+      throw new Error('cli is required for runPhase');
+    }
+    if (!targetPhaseId) {
+      throw new Error('targetPhaseId is required for runPhase');
+    }
+
+    const phaseTasks = listPhaseTaskFiles(context.fs);
+    if (!Array.isArray(phaseTasks) || phaseTasks.length === 0) {
+      return {
+        code: 1,
+        errorMessage: 'No phase task files found under multishot/. Run multishot --gen-tasks first.',
+        phases: [],
+      };
+    }
+
+    const target = phaseTasks.find((p) => p.phaseId === targetPhaseId);
+    if (!target) {
+      return {
+        code: 1,
+        errorMessage: `Phase ${targetPhaseId} not found.`,
+        phases: [],
+      };
+    }
+
+    if (!Array.isArray(target.taskFiles) || target.taskFiles.length === 0) {
+      return {
+        code: 1,
+        errorMessage: `Phase ${targetPhaseId} contains no task files.`,
+        phases: [],
+      };
+    }
+
+    const taskResults = [];
+    for (const taskFile of target.taskFiles) {
+      const execResult = executePrompt(
+        {
+          cli: context.cli,
+          action: REQUIRED_ACTIONS.runTasks,
+          phaseId: target.phaseId,
+          taskFile,
+        },
+        buildExecDeps(context),
+      );
+
+      taskResults.push({ taskFile, code: execResult.code });
+
+      if (execResult.code !== 0) {
+        return {
+          code: execResult.code,
+          phases: [{ phaseId: target.phaseId, tasks: taskResults }],
+          errorMessage: `Task ${taskFile} failed (phase ${target.phaseId}) with code ${execResult.code}`,
+        };
+      }
+    }
+
+    return {
+      code: 0,
+      phases: [{ phaseId: target.phaseId, tasks: taskResults }],
+    };
+  }
+
   return {
     runGenPhases,
     runGenTasks,
     runTasks,
+    runPhase,
   };
 }
 

@@ -20,6 +20,17 @@ describe('CLI parsing', () => {
     expect(result).toEqual({ kind: 'command', cli: 'codex-cli', action: 'gen-tasks' });
   });
 
+  it('parses run-phase flag with phaseId', () => {
+    const argv = ['node', 'multishot', '--run-phase', 'Phase1'];
+    const result = parseArgs(argv);
+    expect(result).toEqual({
+      kind: 'command',
+      cli: 'codex-cli',
+      action: 'run-phase',
+      phaseId: 'Phase1',
+    });
+  });
+
   it('returns help when no arguments provided', () => {
     const argv = ['node', 'multishot'];
     const result = parseArgs(argv);
@@ -102,6 +113,29 @@ describe('CLI runner', () => {
     expect(result.code).toBe(0);
     expect(orchestrator.runTasks).toHaveBeenCalledWith(
       expect.objectContaining({ cli: 'codex-cli' }),
+    );
+    expect(result.result.phases).toEqual([
+      { phaseId: 'Phase1', tasks: [{ taskFile: 'task1', code: 0 }] },
+    ]);
+  });
+
+  it('delegates to orchestrator for run-phase', () => {
+    const io = createIO();
+    const orchestrator = {
+      runGenPhases: vi.fn(),
+      runGenTasks: vi.fn(),
+      runTasks: vi.fn(),
+      runPhase: vi.fn(() => ({
+        code: 0,
+        phases: [{ phaseId: 'Phase1', tasks: [{ taskFile: 'task1', code: 0 }] }],
+      })),
+    };
+    const argv = ['node', 'multishot', '--run-phase', 'Phase1'];
+    const result = run(argv, io, { orchestrator, fs: {} });
+    expect(result.code).toBe(0);
+    expect(orchestrator.runPhase).toHaveBeenCalledWith(
+      expect.objectContaining({ cli: 'codex-cli' }),
+      'Phase1',
     );
     expect(result.result.phases).toEqual([
       { phaseId: 'Phase1', tasks: [{ taskFile: 'task1', code: 0 }] },

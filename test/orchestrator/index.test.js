@@ -193,4 +193,58 @@ describe('createOrchestrator', () => {
     expect(result.errorMessage).toMatch(/No phase task files/);
     expect(result.phases).toEqual([]);
   });
+
+  it('runs only the specified phase with runPhase', () => {
+    const executePrompt = vi.fn().mockReturnValue({ code: 0 });
+    const getPhaseIds = vi.fn();
+    const listPhaseTaskFiles = vi.fn().mockReturnValue([
+      { phaseId: 'Phase1', taskFiles: ['multishot/Phase1/task1.md'] },
+      { phaseId: 'Phase2', taskFiles: ['multishot/Phase2/task1.md'] },
+    ]);
+    const orchestrator = createOrchestrator({ executePrompt, getPhaseIds, listPhaseTaskFiles });
+
+    const result = orchestrator.runPhase(createContext(), 'Phase2');
+    expect(result).toEqual({
+      code: 0,
+      phases: [
+        { phaseId: 'Phase2', tasks: [{ taskFile: 'multishot/Phase2/task1.md', code: 0 }] },
+      ],
+    });
+    expect(executePrompt).toHaveBeenCalledTimes(1);
+    expect(executePrompt).toHaveBeenCalledWith(
+      expect.objectContaining({
+        cli: 'codex-cli',
+        action: 'run-tasks',
+        phaseId: 'Phase2',
+        taskFile: 'multishot/Phase2/task1.md',
+      }),
+      expect.any(Object),
+    );
+  });
+
+  it('returns error when target phase not found', () => {
+    const executePrompt = vi.fn();
+    const getPhaseIds = vi.fn();
+    const listPhaseTaskFiles = vi.fn().mockReturnValue([
+      { phaseId: 'Phase1', taskFiles: ['multishot/Phase1/task1.md'] },
+    ]);
+    const orchestrator = createOrchestrator({ executePrompt, getPhaseIds, listPhaseTaskFiles });
+    const result = orchestrator.runPhase(createContext(), 'PhaseX');
+    expect(result.code).toBe(1);
+    expect(result.errorMessage).toMatch(/not found/);
+    expect(result.phases).toEqual([]);
+  });
+
+  it('returns error when target phase has no tasks', () => {
+    const executePrompt = vi.fn();
+    const getPhaseIds = vi.fn();
+    const listPhaseTaskFiles = vi.fn().mockReturnValue([
+      { phaseId: 'Phase1', taskFiles: [] },
+    ]);
+    const orchestrator = createOrchestrator({ executePrompt, getPhaseIds, listPhaseTaskFiles });
+    const result = orchestrator.runPhase(createContext(), 'Phase1');
+    expect(result.code).toBe(1);
+    expect(result.errorMessage).toMatch(/no task files/i);
+    expect(result.phases).toEqual([]);
+  });
 });

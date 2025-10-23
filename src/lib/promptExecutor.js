@@ -26,6 +26,32 @@ function getPromptPathForInvocation(effectivePromptPath) {
   return resolveFromPackageRoot(effectivePromptPath);
 }
 
+function getPackageDataDir() {
+  return resolveFromPackageRoot('data');
+}
+
+// Create a workspace-local copy of the prompt with absolute paths for internal data references.
+function materializePromptWithAbsoluteData(absPromptPath) {
+  const dataDir = getPackageDataDir();
+  const workspaceDir = path.resolve(process.cwd(), 'multishot', '.internal');
+  const destPath = path.join(workspaceDir, path.basename(absPromptPath));
+
+  try {
+    const original = fs.readFileSync(absPromptPath, 'utf8');
+    // Replace common internal references to package data with absolute paths
+    let rewritten = original.replaceAll('data/constraints.md', path.join(dataDir, 'constraints.md'));
+    // In case other prompts under data/ are referenced in the future, handle the general folder prefix
+    rewritten = rewritten.replaceAll('data/prompts/', path.join(dataDir, 'prompts') + path.sep);
+
+    fs.mkdirSync(workspaceDir, { recursive: true });
+    fs.writeFileSync(destPath, rewritten, 'utf8');
+    return destPath;
+  } catch (error) {
+    // If anything goes wrong, fall back to the original path
+    return absPromptPath;
+  }
+}
+
 const ACTION_DEPENDENCIES = {
   'gen-phases': [
     {
@@ -242,7 +268,8 @@ function executePrompt(params, deps) {
 
   const effectivePromptPath = promptPath || resolvePrompt(action);
   const pathForCli = getPromptPathForInvocation(effectivePromptPath);
-  const invocation = getCliInvocation(cli, pathForCli);
+  const promptForCli = materializePromptWithAbsoluteData(pathForCli);
+  const invocation = getCliInvocation(cli, promptForCli);
   if (invocation.args.length > 0) {
     const args = [...invocation.args];
     let message = args[args.length - 1];
