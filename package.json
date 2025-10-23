@@ -1,0 +1,31 @@
+{
+  "name": "multishot",
+  "version": "0.1.0",
+  "description": "Sequentially run CLI based AI tasks",
+  "homepage": "https://github.com/alfreema/multishot#readme",
+  "bugs": {
+    "url": "https://github.com/alfreema/multishot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alfreema/multishot.git"
+  },
+  "license": "MIT",
+  "author": "Aaron Freeman",
+  "type": "commonjs",
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "multishot": "bin/multishot.js"
+  },
+  "scripts": {
+    "test": "vitest --run --pool=threads",
+    "multishot": "node bin/multishot.js"
+  },
+  "dependencies": {
+    "commander": "^11.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.1"
+  }
+}
