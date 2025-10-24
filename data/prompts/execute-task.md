@@ -1,19 +1,19 @@
 id: ExecuteTask
 title: Execute a single task offline and log transcript
 objective: |
-  Given a task file path like `docs/specs/phaseX/taskY.md`, execute the task
+  Given a task file path like `multishot/phaseX/taskY.md`, execute the task
   in a single, non-interactive pass, write a full
-  append-only transcript to `log/phaseX/taskY.log`, and print exactly one line
+  append-only transcript to `multishot/phaseX/taskY.log`, and print exactly one line
   to stdout: `Success` on valid completion or `Failure` otherwise.
 
 instructions: |
   Inputs
-  - `task_file`: A path like `docs/specs/phaseX/taskY.md` containing fields such as
+  - `task_file`: A path like `multishot/phaseX/taskY.md` containing fields such as
     `id`, `title`, `objective`, `prompt`, `logging`, and `constraints`.
 
   Steps (single pass)
   1) Parse `task_file` and extract the full task prompt (treat everything under its `prompt:` as the task body).
-  2) Begin append-only logging to `log/phaseX/taskY.log` where `phaseX/taskY` matches the `task_file` path.
+  2) Begin append-only logging to `multishot/phaseX/taskY.log` where `phaseX/taskY` matches the `task_file` path.
      - Prepend a header with:
        - `model:` your model identifier
        - `version:` your model/runtime version
@@ -28,7 +28,7 @@ instructions: |
      - `Failure` otherwise.
 
   Logging requirements
-  - Always append to `log/phaseX/taskY.log`; never truncate existing content.
+  - Always append to `multishot/phaseX/taskY.log`; never truncate existing content.
   - The log must contain, in order:
     1) Header (model, version, ISO8601 timestamp)
     2) Full task prompt body
@@ -36,13 +36,13 @@ instructions: |
     4) A single `result:` classification line
 
   Prohibitions
-  - Do not modify any input docs, including `docs/project.md`, specs, or constraints.
-  - Do not write files outside `log/phaseX/taskY.log` for this execution.
+  - Do not modify any input docs, including `multishot/project.md`, specs, or constraints.
+  - Do not write files outside `multishot/phaseX/taskY.log` for this execution.
   - Do not perform network calls or non-declared tools.
 
 validation: |
   Consider the run successful only if:
-  - The log file exists at the derived `log/phaseX/taskY.log` path.
+  - The log file exists at the derived `multishot/phaseX/taskY.log` path.
   - The log begins with a header that includes `model`, `version`, `timestamp` (ISO8601),
     followed by the full task prompt body, raw outputs, and a `result:` line.
   - No input documents were modified.

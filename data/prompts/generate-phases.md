@@ -6,6 +6,10 @@ Produce a new `multishot/phases.md` file that decomposes `multishot/project.md` 
 
 Once the phases document is generated, validate that it satisfies all constraints above and then print the mandated single-line completion status.
 
+If the project involves python, check to see if you are in a virtual environment -- if so you may create a phase to install pytest and install other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+
+If the project involves node project, you may create a phase to install vitest and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+
 # Phase Specification
 
 ## Format
