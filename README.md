@@ -79,6 +79,9 @@ multishot --gen-tasks
 
 # execute all task prompts sequentially
 multishot --run-tasks
+
+# execute only a single phase
+multishot --run-phase "Phase 1"
 ```
 
 ### CLI Options
@@ -94,6 +97,9 @@ multishot --run-tasks
 
 - `--run-tasks`  
   Iterates every generated task prompt (`multishot/PhaseX/taskY.md`), executing them through the configured CLI until completion or the first failure.
+
+- `--run-phase <phase>`  
+  Executes all tasks for a single phase, by phase name (e.g., `--run-phase "Phase 1"`).
 
 ---
 
