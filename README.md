@@ -105,6 +105,15 @@ multishot --run-phase "Phase 1"
 
 ---
 
+### Model Selection
+
+- Generation (`--gen-phases`, `--gen-tasks`) uses `gpt-5-medium`.
+- Execution (`--run-tasks`, `--run-phase`) uses `gpt-5-codex-low`.
+
+These defaults are applied internally when invoking the configured CLI.
+
+---
+
 ## Roadmap
 
 - [ ] Support additional CLI integrations (Claude, OpenAI realtime, etc.)

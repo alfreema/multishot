@@ -95,7 +95,7 @@ describe('executePrompt', () => {
       args: [
         '--full-auto',
         '--model',
-        'gpt-5-codex-low',
+        'gpt-5-medium',
         'exec',
         '--sandbox',
         'danger-full-access',
@@ -108,7 +108,7 @@ describe('executePrompt', () => {
       [
         '--full-auto',
         '--model',
-        'gpt-5-codex-low',
+        'gpt-5-medium',
         'exec',
         '--sandbox',
         'danger-full-access',

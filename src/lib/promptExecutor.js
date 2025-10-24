@@ -267,7 +267,13 @@ function executePrompt(params, deps) {
   const effectivePromptPath = promptPath || resolvePrompt(action);
   const pathForCli = getPromptPathForInvocation(effectivePromptPath);
   const promptForCli = materializePromptWithAbsoluteData(pathForCli);
-  const invocation = getCliInvocation(cli, promptForCli);
+  const MODEL_BY_ACTION = {
+    'gen-phases': 'gpt-5-medium',
+    'gen-tasks': 'gpt-5-medium',
+    'run-tasks': 'gpt-5-codex-low',
+  };
+  const model = MODEL_BY_ACTION[action] || 'gpt-5-codex-low';
+  const invocation = getCliInvocation(cli, promptForCli, { model });
   if (invocation.args.length > 0) {
     const args = [...invocation.args];
     let message = args[args.length - 1];
