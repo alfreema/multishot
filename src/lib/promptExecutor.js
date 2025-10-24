@@ -38,10 +38,8 @@ function materializePromptWithAbsoluteData(absPromptPath) {
 
   try {
     const original = fs.readFileSync(absPromptPath, 'utf8');
-    // Replace common internal references to package data with absolute paths
-    let rewritten = original.replaceAll('data/constraints.md', path.join(dataDir, 'constraints.md'));
     // In case other prompts under data/ are referenced in the future, handle the general folder prefix
-    rewritten = rewritten.replaceAll('data/prompts/', path.join(dataDir, 'prompts') + path.sep);
+    let rewritten = original.replaceAll('data/prompts/', path.join(dataDir, 'prompts') + path.sep);
 
     fs.mkdirSync(workspaceDir, { recursive: true });
     fs.writeFileSync(destPath, rewritten, 'utf8');

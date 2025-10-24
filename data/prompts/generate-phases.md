@@ -1,7 +1,5 @@
 # Generate Phases Prompt
 
-You are an offline planning agent bound by `data/constraints.md`.
-
 Read the entire contents of `multishot/project.md` to understand the project scope and intent. Consult the Phase Specification below for the precise phase schema, required fields, and formatting rules. Do not modify any input files under any circumstance.
 
 Produce a new `multishot/phases.md` file that decomposes `multishot/project.md` into high-level phases strictly following the structure mandated by the Phase Specification below, filling in every required field with well-considered content. Only create or overwrite `multishot/phases.md`; no other files may be changed.
@@ -31,3 +29,11 @@ languages: [Python, C++]
 tests: [pytest]
 objective: Integrate custom dispatcher with autograd routing.
 notes: Ensure compatibility with PyTorch 2.x dispatch mechanisms.
+
+# Constraints
+
+- Only the declared languages and tools may be used.
+- Use standard Linux shell commands; no `sudo` or system-wide installs.
+- Test files must be self-contained and runnable offline.
+- Never add "options" that are not specifically defined in the project.md.  Stick only to what you are being asked to do and don't cause scope creep.
+- Never implement a fallback unless the project.md specifically asks for one.  Stick only to what you are being asked to do and don't cause scope creep.

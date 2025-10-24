@@ -6,35 +6,30 @@ objective: |
   rewrite/renumber the phase’s tasks in-place, maintaining valid dependencies.
 
 instructions: |
-  You are an offline, single-pass prompt executor. Follow docs/constraints.md strictly.
-
   Scope
   - Target exactly one phase directory: `docs/specs/{phaseId}/` (e.g., `docs/specs/phase6/`). This prompt explicitly references `docs/specs/phaseX/` tasks to align with specs.
-  - Only read from: `docs/specs/{phaseId}/task*.md`, `docs/constraints.md`, `docs/task-spec.md`.
+  - Only read from: `docs/specs/{phaseId}/task*.md` and `docs/task-spec.md`.
   - Write changes only within the same target phase directory.
   - Never modify files outside `docs/specs/{phaseId}/` and never modify `docs/project.md`.
 
   Required references
-  - Constraints: `docs/constraints.md` (single-pass, offline, Success/Failure-only stdout).
   - Task schema: `docs/task-spec.md` (required fields, numbering rules, depends_on semantics).
   - Phase tasks: `docs/specs/{phaseId}/taskN.md` files are the sole inputs to reevaluate (i.e., tasks under `docs/specs/phaseX/`).
 
   Procedure (single pass)
-  1) Load `docs/constraints.md` and enforce all execution rules (offline, append-only logs elsewhere, single stdout line contract).
-  2) Load `docs/task-spec.md` and validate that each task file conforms to the required fields.
-  3) Read all tasks under `docs/specs/{phaseId}/` in numeric order.
-  4) For each task, rate oneshot-ability based on:
+  1) Load `docs/task-spec.md` and validate that each task file conforms to the required fields.
+  2) Read all tasks under `docs/specs/{phaseId}/` in numeric order.
+  3) For each task, rate oneshot-ability based on:
      - Context size and determinism for offline execution.
      - Clarity of objective, success criteria, and logging requirements.
      - Estimated token/cost footprint given referenced assets.
-  5) For any task rated risky or too large/ambiguous, split it into smaller, clearer tasks that are each oneshottable.
+  4) For any task rated risky or too large/ambiguous, split it into smaller, clearer tasks that are each oneshottable.
      - Preserve original intent and coverage.
      - Distribute work logically to minimize cross-task coupling.
-  6) Rewrite the target phase’s tasks in-place:
+  5) Rewrite the target phase’s tasks in-place:
      - Emit updated files as `docs/specs/{phaseId}/task1.md`, `task2.md`, ... with contiguous numbering starting at 1.
      - Update each task’s `depends_on` to reference only tasks within the same phase using the new numbering.
-     - Ensure each task includes explicit logging requirements and a final stdout contract of exactly `Success` or `Failure` per constraints.
-  7) Validate the rewritten phase:
+  6) Validate the rewritten phase:
      - All tasks exist with contiguous numbering, valid `id`/`title`/`objective`/`prompt` fields.
      - Any task splits include proportional test/validation steps.
      - No files outside `docs/specs/{phaseId}/` were modified.
@@ -51,7 +46,7 @@ validation: |
   Consider the run successful only if:
   - All tasks in `docs/specs/{phaseId}/` are present and renumbered contiguously starting at 1.
   - `depends_on` fields reference only tasks within the same phase using the new numbering.
-  - The rewritten tasks adhere to `docs/task-spec.md` and honor constraints in `docs/constraints.md`.
+  - The rewritten tasks adhere to `docs/task-spec.md`.
   - No files outside `docs/specs/{phaseId}/` were changed and `docs/project.md` was not modified.
 
 stdout_contract: |
