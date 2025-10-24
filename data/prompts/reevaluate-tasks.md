@@ -35,7 +35,7 @@ instructions: |
   Output contract
   - Make changes only under `multishot/{phaseId}/`.
   - Do not modify `multishot/project.md`.
-  - Print exactly one line to stdout: `Success` when all validations pass; otherwise `Failure`.
+  - Print to stdout: `Success` when all validations pass; otherwise `Failure`.
 
 inputs: |
   - `phaseId` (required): A phase identifier like `Phase6` (case-insensitive when mapping to folder `multishot/phase6/`).
@@ -47,6 +47,6 @@ validation: |
   - No files outside `multishot/{phaseId}/` were changed and `multishot/project.md` was not modified.
 
 stdout_contract: |
-  Print exactly one line:
+  Print:
   - `Success` when validations pass.
   - `Failure` otherwise.

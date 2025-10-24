@@ -4,11 +4,11 @@ Read `multishot/phases.md` to enumerate phases and their goals. Follow the Task 
 
 When provided a phase identifier (e.g., `Phase1`), create or overwrite the task prompt files under `multishot/{phaseId}/taskN.md`. Generate one file per task described for that phase, ensuring each includes the fields `id`, `title`, `depends_on`, `objective`, `success_criteria`, `prompt`, `logging`, and `constraints` exactly as specified in Task Specification below.
 
-Within each task's `prompt`, instruct the executor to log to `multishot/{phaseId}/taskN.log`, starting the log with its model identifier and timestamp, capturing the full prompt and raw response, respecting the offline single-pass constraint, and printing only "Success" or "Failure" to stdout.
+Within each task's `prompt`, instruct the executor to log to `multishot/{phaseId}/taskN.log`, starting the log with its model identifier and timestamp, capturing the full prompt and raw response, respecting the offline single-pass constraint, and printing "Success" or "Failure" to stdout.
 
 Do not modify any input references (`multishot/phases.md` or `multishot/project.md`) or files outside `multishot/{phaseId}/`. Only create or overwrite the task files for the requested phase.
 
-After generating every task file for the chosen phase, verify the schema and constraint compliance, then emit the mandated single-line completion status.
+After generating every task file for the chosen phase, verify the schema and constraint compliance, then print a completion status.
 
 Every task file must include the Constraints section below.
 
@@ -49,7 +49,7 @@ logging: log/phase2/task6.log
 - Only the declared languages and tools may be used.
 - Use standard Linux shell commands; no `sudo` or system-wide installs.
 - No network writes or external API calls outside the project directory.
-- Each task must print only `"Success"` or `"Failure"` to stdout.
+- Each task must print `"Success"` or `"Failure"` to stdout.
 - Test files must be self-contained and runnable offline.
 - Tasks must not access files outside the project directory.
 - Never add "options" that are not specifically defined in the project.md.  Stick only to what you are being asked to do and don't cause scope creep.

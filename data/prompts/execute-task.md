@@ -3,7 +3,7 @@ title: Execute a single task offline and log transcript
 objective: |
   Given a task file path like `multishot/phaseX/taskY.md`, execute the task
   in a single, non-interactive pass, write a full
-  append-only transcript to `multishot/phaseX/taskY.log`, and print exactly one line
+  append-only transcript to `multishot/phaseX/taskY.log`, and print
   to stdout: `Success` on valid completion or `Failure` otherwise.
 
 instructions: |
@@ -23,7 +23,7 @@ instructions: |
   4) Append raw outputs to the same log under a clear section.
   5) Append a final `result:` classification line with one of:
      `success|model_failure|test_failure|infra_failure|executor_failure`.
-  6) Print exactly one line to stdout:
+  6) Print to stdout:
      - `Success` if the task completed and all validations passed.
      - `Failure` otherwise.
 
@@ -46,10 +46,10 @@ validation: |
   - The log begins with a header that includes `model`, `version`, `timestamp` (ISO8601),
     followed by the full task prompt body, raw outputs, and a `result:` line.
   - No input documents were modified.
-  - Stdout contained exactly one of: `Success` or `Failure`.
+  - Stdout contained one of: `Success` or `Failure`.
 
 stdout_contract: |
-  Print exactly one line:
+  Print:
   - `Success` when validations pass.
   - `Failure` otherwise.
 
