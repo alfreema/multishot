@@ -4,11 +4,14 @@ Read the entire contents of `multishot/project.md` to understand the project sco
 
 Produce a new `multishot/phases.md` file that decomposes `multishot/project.md` into high-level phases strictly following the structure mandated by the Phase Specification below, filling in every required field with well-considered content. Only create or overwrite `multishot/phases.md`; no other files may be changed.
 
-Once the phases document is generated, validate that it satisfies all constraints above and then print the mandated single-line completion status.
+These phases will be broken into task prompts in a later step and those task prompts will each require to be verified, preferably with a test of some sort like pytest, vitest, jest, etc.  So make sure the first phase sets up an environment including a test library of some sort.
 
-If the project involves python, check to see if you are in a virtual environment -- if so you may create a phase to install pytest and install other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+If the project involves python, check to see if you are in a virtual environment -- if so the first phase should include installing pytest and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
 
-If the project involves node project, you may create a phase to install vitest and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+If the project involves node project, the first phase should include installing vitest (or jest) and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+
+Once the phases document is generated, validate that it satisfies all constraints above and then print the completion status.
+
 
 # Phase Specification
 
