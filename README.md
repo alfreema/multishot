@@ -99,7 +99,7 @@ multishot --run-phase "Phase 1"
   Iterates every generated task prompt (`multishot/PhaseX/taskY.md`), executing them through the configured CLI until completion or the first failure.
 
 - `--run-phase <phase>`  
-  Executes all tasks for a single phase, by phase name (e.g., `--run-phase "Phase 1"`).
+  Executes all tasks for a single phase, by phase name (e.g., `--run-phase "Phase1"`).
 
 ---
 
