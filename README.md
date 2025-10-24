@@ -3,11 +3,13 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Node.js](https://img.shields.io/badge/Node.js-18%2B-brightgreen) ![Status: Alpha](https://img.shields.io/badge/status-alpha-orange)
 
 <p align="center">
-  <strong>Automate multi-phase AI project scaffolding from a single specification.</strong>
+
+  ### <strong>From one spec to a complete AI project pipeline, automatically.</strong>
   <br />
-  Generate phase plans, create executable task prompts, and run them sequentially through your preferred CLI.
-  <br />
-  <a href="https://github.com/alfreema/multishot/issues">File an Issue or Feature Request</a>
+  <em>multishot</em> transforms a single markdown spec into a full, executable development flow.  
+  It builds your phase roadmap, expands each step into testable AI prompts, and runs them in sequence, all while enforcing strict logging and success criteria.  
+  <br /><br />
+  <a href="https://github.com/alfreema/multishot/issues">Suggest a Feature or Report a Bug</a>
 </p>
 
 ---
@@ -52,7 +54,7 @@ Key capabilities:
 
 ### Prerequisites
 
-- Codex CLI
+- Codex CLI (others coming soon)
 - Node.js 18 or later
 - A project specification stored at `multishot/project.md` (see `docs/sample-project.md` for inspiration)
 
