@@ -8,6 +8,8 @@ Within each task's `prompt`, instruct the executor to log to `multishot/{phaseId
 
 Do not modify any input references (`multishot/phases.md` or `multishot/project.md`) or files outside `multishot/{phaseId}/`. Only create or overwrite the task files for the requested phase.
 
+Make sure every task is aware it can use `multishot/phases.md` and `multishot/project.md` for high-level context if needed.
+
 After generating every task file for the chosen phase, verify the schema and constraint compliance, then print a completion status.
 
 Every task file must include the Constraints section below.

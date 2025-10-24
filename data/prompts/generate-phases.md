@@ -6,9 +6,11 @@ Produce a new `multishot/phases.md` file that decomposes `multishot/project.md` 
 
 These phases will be broken into task prompts in a later step and those task prompts will each require to be verified, preferably with a test of some sort like pytest, vitest, jest, etc.  So make sure the first phase sets up an environment including a test library of some sort.
 
-If the project involves python, check to see if you are in a virtual environment -- if so the first phase should include installing pytest and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+If the project involves python, the first phase must be to pip install pytest and confirm pytest is installed (as the first task).   That phase may also install any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
 
-If the project involves node project, the first phase should include installing vitest (or jest) and any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+If the project involves node project, the first phase must include installing vitest (or jest) and confirm vitest (or jest) is installed (as the first task).  That phase can include installing any other packages that make sense for the project. Liberal use of pre-existing packages to solve common problems is strongly encouraged. Don't install any packages globally however.
+
+Make sure an appropriate test package is installed as Phase 1, Task 1 for each programming language used in the project.  Everything else hinges on that.
 
 Once the phases document is generated, validate that it satisfies all constraints above and then print the completion status.
 
